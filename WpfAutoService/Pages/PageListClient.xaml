@@ -1,0 +1,149 @@
+﻿<Page x:Class="WpfAutoService.Pages.PageListClient"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfAutoService.Pages"
+      mc:Ignorable="d" 
+  d:MinHeight="450" d:MinWidth="800"
+      Title="PageListClient">
+
+    <Grid Margin="0,0,-155,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="Search" Grid.Column="0" TextChanged="Search_TextChanged" Margin="10,16,10,17"/>
+            <ComboBox x:Name="FIO" Grid.Column="1" VerticalAlignment="Center" SelectionChanged="FIO_SelectionChanged_1" Margin="90,0,30,0">
+                <ComboBoxItem Tag="0">
+                    <TextBlock  Text="Без сортировки" ></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem Tag="1">
+                    <TextBlock Text="По возрастанию фамилии" ></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem  Tag="2">
+                    <TextBlock Text="По убыванию фамилии"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem  Tag="3">
+                    <TextBlock Text="По возрастанию даты регистрации"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem  Tag="4">
+                    <TextBlock Text="По убыванию даты регистрации"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem Tag="5">
+                    <TextBlock Text="По возрастанию даты последнего посещения"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem Tag="6">
+                    <TextBlock Text="По убыванию даты последнего посещения"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem Tag="7">
+                    <TextBlock Text="По возрастанию количества посещений"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem Tag="8">
+                    <TextBlock Text="По убыванию количества посещений"></TextBlock>
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="Gender"  Grid.Column="2"  Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" ItemsSource="{Binding}" SelectionChanged="Gender_SelectionChanged" Margin="10,0,0,0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <ComboBox x:Name="RecordsPerPage" Grid.Column="2" VerticalAlignment="Center" SelectionChanged="RecordsPerPage_SelectionChanged" Margin="70,0,10,0" Width="150">
+                <ComboBoxItem Tag="10">
+                    <TextBlock Text="10 записей"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem Tag="50">
+                    <TextBlock Text="50 записей"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem Tag="200">
+                    <TextBlock Text="200 записей"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem Tag="-1">
+                    <TextBlock Text="Все записи"></TextBlock>
+                </ComboBoxItem>
+            </ComboBox>
+        </Grid>
+
+        <DataGrid AutoGenerateColumns="False" x:Name="clientsDataGrid" Grid.Row="1" IsReadOnly="True" GridLinesVisibility="None" MouseDown="clientsDataGrid_MouseDown">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Фото" Width="55">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding PhotoPath}" Width="50" Height="50"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="Отчество" Binding="{Binding Patronymic}"/>
+                <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat=d}"/>
+                <DataGridTextColumn Header="Дата добавления" Binding="{Binding RegistrationDate, StringFormat=d}"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
+                <DataGridTextColumn Header="Пол" Binding="{Binding Gender.Name}"/>
+                <DataGridTextColumn Header="Дата последнего посещения" Binding="{Binding LastVisitDate, StringFormat=d}"/>
+                <DataGridTextColumn Header="Количество посещений" Binding="{Binding VisitCount}"/>
+                <DataGridTemplateColumn Header="Тег">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding Tag.Color}" CornerRadius="5" Padding="5">
+                                <TextBlock Text="{Binding Tag.Title}" Foreground="White" />
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+                <DataGridTemplateColumn Header="Действия">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="Edit" Content="Редактировать" Click="Edit_Click" Width="115"/>
+                                <Button x:Name="Delete" Content="Удалить" Click="Delete_Click" Width="115" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="267*"></ColumnDefinition>
+                <ColumnDefinition Width="533*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="10,0,152,0">
+                <TextBlock Text="Всего: " HorizontalAlignment="Left"  VerticalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="full"  Text="" HorizontalAlignment="Right"  VerticalAlignment="Center"></TextBlock>
+            </StackPanel>
+            <StackPanel  Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch" Width="auto" Margin="3,0,0,0">
+                <Button x:Name="back" Content="Back" Click="back_Click" IsEnabled="False" Height="30" Width="70"/>
+                <StackPanel x:Name="pagin" Orientation="Horizontal" HorizontalAlignment="Stretch" Width="auto"/>
+                <Button x:Name="forward" Content="Forward" Click="forward_Click" Height="30" Width="70"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="addButton" Height="auto" Width="200" Grid.Column="0" Content="Добавить" Click="addButton_Click" Margin="150,0,100,0"/>
+            <Button x:Name="updateButton" Height="auto" Width="200" Grid.Column="1" Content="Обновить список" Click="updateButton_Click" Grid.ColumnSpan="2" Margin="100,0,150,0"/>
+        </Grid>
+    </Grid>
+</Page>
